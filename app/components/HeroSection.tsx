@@ -13,11 +13,11 @@ export default function HeroSection() {
           Deploy intelligent voice agents that automatically reach people over phone calls, hold natural conversations, deliver information, and return structured outcomes at scale.
         </p>
         <div className="mt-2 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-          <Link href="#start" className="btn-primary text-center">
-            Start Automating Calls
+          <Link href="/early-access" className="btn-primary text-center">
+            Get Early Access
           </Link>
-          <Link href="#docs" className="btn-secondary">
-            View Documentation
+          <Link href="#features" className="btn-secondary">
+            Explore Features
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>

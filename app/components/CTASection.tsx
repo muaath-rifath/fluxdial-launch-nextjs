@@ -13,11 +13,11 @@ export default function CTASection() {
         Create intelligent agents, upload your contacts, and start automating your outreach with the ultimate AI voice engagement platform.
       </p>
       <div className="mt-2 flex flex-col gap-4 sm:flex-row">
-        <Link href="#start" className="btn-primary w-full px-8 py-4 sm:w-auto">
-          Start Automating Calls
+        <Link href="/early-access" className="btn-primary w-full px-8 py-4 sm:w-auto">
+          Get Early Access
         </Link>
-        <Link href="#contact" className="btn-secondary w-full px-8 py-4 sm:w-auto">
-          Contact Sales
+        <Link href="#features" className="btn-secondary w-full px-8 py-4 sm:w-auto">
+          Explore Features
         </Link>
       </div>
     </section>

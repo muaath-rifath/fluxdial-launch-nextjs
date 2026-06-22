@@ -82,7 +82,9 @@ export default function Navbar() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-
+          <Link href="/early-access" className="btn-primary hidden sm:inline-flex">
+            Get Early Access
+          </Link>
           <button
             className="lg:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 text-on-surface"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -135,7 +137,14 @@ export default function Navbar() {
           >
             Contact
           </Link>
-
+          <div className="h-px w-full bg-surface-border my-2"></div>
+          <Link
+            href="/early-access"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="btn-primary w-full text-center mt-2 sm:hidden"
+          >
+            Get Early Access
+          </Link>
         </nav>
       </div>
     </header>
