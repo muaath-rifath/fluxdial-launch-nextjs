@@ -15,14 +15,6 @@ export const metadata: Metadata = {
     description: "Get in touch with the ErlangLabs team to discuss your enterprise AI voice needs, schedule a demo, or explore deployment options.",
     url: "https://erlanglabs.com/contact",
     siteName: "ErlangLabs",
-    images: [
-      {
-        url: "https://erlanglabs.com/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Contact ErlangLabs",
-      }
-    ],
     locale: "en_US",
     type: "website",
   },
@@ -31,7 +23,6 @@ export const metadata: Metadata = {
     site: "@erlanglabs",
     title: "Contact Us | ErlangLabs",
     description: "Get in touch with the ErlangLabs team to discuss your enterprise AI voice needs.",
-    images: ["https://erlanglabs.com/og-image.jpg"],
   },
 };
 

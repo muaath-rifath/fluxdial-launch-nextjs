@@ -40,14 +40,6 @@ export const metadata: Metadata = {
     description: "The Voice Infrastructure for Enterprise AI. Deploy intelligent voice agents that sound human and reason like software. Automate outbound and inbound calls seamlessly.",
     url: "https://erlanglabs.com",
     siteName: "ErlangLabs",
-    images: [
-      {
-        url: "https://erlanglabs.com/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "ErlangLabs - AI Voice Engagement Platform",
-      },
-    ],
     locale: "en_US",
     type: "website",
   },
@@ -57,7 +49,6 @@ export const metadata: Metadata = {
     creator: "@erlanglabs",
     title: "ErlangLabs | AI Voice Engagement Platform",
     description: "The Voice Infrastructure for Enterprise AI. Deploy intelligent voice agents that sound human and reason like software.",
-    images: ["https://erlanglabs.com/og-image.jpg"],
   },
   robots: {
     index: true,

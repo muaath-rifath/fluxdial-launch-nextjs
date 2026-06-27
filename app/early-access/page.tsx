@@ -15,14 +15,6 @@ export const metadata: Metadata = {
     description: "Join the ErlangLabs early access waitlist to deploy enterprise AI voice agents. Automate your customer engagement with our cutting-edge voice infrastructure.",
     url: "https://erlanglabs.com/early-access",
     siteName: "ErlangLabs",
-    images: [
-      {
-        url: "https://erlanglabs.com/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Get Early Access to ErlangLabs",
-      }
-    ],
     locale: "en_US",
     type: "website",
   },
@@ -31,7 +23,6 @@ export const metadata: Metadata = {
     site: "@erlanglabs",
     title: "Get Early Access | ErlangLabs",
     description: "Join the ErlangLabs early access waitlist to deploy enterprise AI voice agents.",
-    images: ["https://erlanglabs.com/og-image.jpg"],
   },
 };
 
