@@ -9,7 +9,8 @@ export default function ContactForm() {
     lastName: '',
     email: '',
     company: '',
-    message: ''
+    message: '',
+    _honey: '',       // honeypot – never shown to real users
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -39,7 +40,7 @@ export default function ContactForm() {
 
       if (res.ok) {
         setStatus('success');
-        setFormData({ firstName: '', lastName: '', email: '', company: '', message: '' });
+        setFormData({ firstName: '', lastName: '', email: '', company: '', message: '', _honey: '' });
         setTurnstileToken(null);
       } else {
         setStatus('error');
@@ -64,6 +65,17 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      {/* Honeypot field – hidden from real users, bots fill it automatically */}
+      <input
+        type="text"
+        name="_honey"
+        value={formData._honey}
+        onChange={handleChange}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ display: 'none' }}
+      />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <label htmlFor="firstName" className="font-mono text-sm font-medium text-on-surface">

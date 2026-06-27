@@ -1,21 +1,66 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { z } from 'zod';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
-// Helper function to get a temporary access token using the persistent refresh token
+// ─── Zod Schema ────────────────────────────────────────────────────────────────
+const contactSchema = z.object({
+  firstName:      z.string().max(100).optional().default(''),
+  lastName:       z.string().min(1, 'Last name is required').max(100),
+  email:          z.email('Invalid email address').max(254),
+  company:        z.string().max(100).optional().default(''),
+  message:        z.string().max(5000).optional().default(''),
+  turnstileToken: z.string().min(1, 'CAPTCHA token is required'),
+  _honey:         z.string().optional().default(''),
+});
+
+// ─── Rate Limiter (Upstash) ────────────────────────────────────────────────────
+// Gracefully disabled when env vars are not set (local dev / preview).
+let ratelimit: Ratelimit | null = null;
+const redisUrl = process.env.UPSTASH_REDIS_REST_KV_REST_API_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN;
+
+if (redisUrl && redisToken) {
+  ratelimit = new Ratelimit({
+    redis: new Redis({
+      url: redisUrl,
+      token: redisToken,
+    }),
+    // 10 submissions per IP per 10-minute sliding window (handles shared office IPs better)
+    limiter: Ratelimit.slidingWindow(10, '10 m'),
+    analytics: true,
+    prefix: 'erlanglabs:contact',
+  });
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get('CF-Connecting-IP') ??
+    request.headers.get('X-Forwarded-For')?.split(',')[0].trim() ??
+    'unknown'
+  );
+}
+
 async function getZohoAccessToken() {
-  const url = `${process.env.ZOHO_ACCOUNTS_URL}/oauth/v2/token?refresh_token=${process.env.ZOHO_REFRESH_TOKEN}&client_id=${process.env.ZOHO_CLIENT_ID}&client_secret=${process.env.ZOHO_CLIENT_SECRET}&grant_type=refresh_token`;
+  const url =
+    `${process.env.ZOHO_ACCOUNTS_URL}/oauth/v2/token` +
+    `?refresh_token=${process.env.ZOHO_REFRESH_TOKEN}` +
+    `&client_id=${process.env.ZOHO_CLIENT_ID}` +
+    `&client_secret=${process.env.ZOHO_CLIENT_SECRET}` +
+    `&grant_type=refresh_token`;
 
   const response = await fetch(url, { method: 'POST' });
   const data = await response.json();
 
   if (!response.ok || !data.access_token) {
-    throw new Error(`Failed to refresh Zoho token: ${data.error || 'Unknown error'}`);
+    throw new Error(`Failed to refresh Zoho token: ${data.error ?? 'Unknown error'}`);
   }
 
-  return data.access_token;
+  return data.access_token as string;
 }
 
-// Verify Cloudflare Turnstile token server-side
 async function verifyTurnstileToken(token: string, remoteip?: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) {
@@ -38,53 +83,97 @@ async function verifyTurnstileToken(token: string, remoteip?: string): Promise<b
   return data.success === true;
 }
 
+// ─── Route Handler ─────────────────────────────────────────────────────────────
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { firstName, lastName, email, company, message, turnstileToken } = body;
-
-    // Verify Turnstile CAPTCHA before anything else
-    if (!turnstileToken) {
-      return NextResponse.json({ error: 'CAPTCHA token missing' }, { status: 400 });
+    // ── 1. Origin check (production only) ──────────────────────────────────────
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    if (siteUrl && process.env.NODE_ENV === 'production') {
+      const origin = request.headers.get('origin') ?? '';
+      const allowed = siteUrl.replace(/\/$/, '');
+      if (origin !== allowed) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
-    const ip = request.headers.get('CF-Connecting-IP') ?? request.headers.get('X-Forwarded-For') ?? undefined;
-    const isHuman = await verifyTurnstileToken(turnstileToken, ip ?? undefined);
+    // ── 2. Rate limiting ────────────────────────────────────────────────────────
+    if (ratelimit) {
+      const ip = getClientIp(request);
+      const { success, limit, remaining, reset } = await ratelimit.limit(ip);
+      if (!success) {
+        const retryAfterSecs = Math.ceil((reset - Date.now()) / 1000);
+        return NextResponse.json(
+          { error: 'Too many requests. Please try again later.' },
+          {
+            status: 429,
+            headers: {
+              'X-RateLimit-Limit':     String(limit),
+              'X-RateLimit-Remaining': String(remaining),
+              'Retry-After':           String(retryAfterSecs),
+            },
+          }
+        );
+      }
+    }
+
+    // ── 3. Parse & validate body with Zod ──────────────────────────────────────
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+
+    const parsed = contactSchema.safeParse(body);
+    if (!parsed.success) {
+      const firstIssue = parsed.error.issues[0];
+      return NextResponse.json(
+        { error: firstIssue?.message ?? 'Invalid request data' },
+        { status: 400 }
+      );
+    }
+
+    const { firstName, lastName, email, company, message, turnstileToken, _honey } = parsed.data;
+
+    // ── 4. Honeypot check ───────────────────────────────────────────────────────
+    // If the hidden field was filled, it's almost certainly a bot.
+    // Return a 200 to avoid teaching the bot what failed.
+    if (_honey) {
+      console.warn(`Honeypot triggered from IP: ${getClientIp(request)}`);
+      return NextResponse.json({ success: true }, { status: 200 });
+    }
+
+    // ── 5. Turnstile CAPTCHA verification ───────────────────────────────────────
+    const ip = getClientIp(request);
+    const isHuman = await verifyTurnstileToken(turnstileToken, ip);
     if (!isHuman) {
       return NextResponse.json({ error: 'CAPTCHA verification failed' }, { status: 400 });
     }
 
-    // Basic validation
-    if (!lastName || !email) {
-      return NextResponse.json({ error: 'Missing mandatory fields (Last Name, Email)' }, { status: 400 });
-    }
-
-    // 1. Get a fresh short-lived access token
+    // ── 6. Get Zoho access token ────────────────────────────────────────────────
     const accessToken = await getZohoAccessToken();
 
-    // 2. Format the payload specifically for the Zoho CRM Leads module
-    // Zoho CRM requires "Last_Name" as a mandatory field for new leads by default
+    // ── 7. Create lead in Zoho CRM ──────────────────────────────────────────────
     const leadData = {
       data: [
         {
-          First_Name: firstName || '',
-          Last_Name: lastName,
-          Email: email,
-          Company: company || 'Not Provided',
-          Description: message || '',
-          Lead_Source: 'Website Contact Form'
-        }
-      ]
+          First_Name:  firstName,
+          Last_Name:   lastName,
+          Email:       email,
+          Company:     company || 'Not Provided',
+          Description: message,
+          Lead_Source: 'Website Contact Form',
+        },
+      ],
     };
 
-    // 3. Post data to Zoho CRM Leads API endpoint
     const crmResponse = await fetch(`${process.env.ZOHO_API_BASE_URL}/crm/v3/Leads`, {
       method: 'POST',
       headers: {
-        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-        'Content-Type': 'application/json'
+        Authorization:  `Zoho-oauthtoken ${accessToken}`,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(leadData)
+      body: JSON.stringify(leadData),
     });
 
     const crmResult = await crmResponse.json();
@@ -94,13 +183,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to push data to CRM' }, { status: 502 });
     }
 
-    // 4. Send confirmation email using Resend
-    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your_resend_api_key_here') {
+    // ── 8. Send confirmation email via Resend ───────────────────────────────────
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey && resendKey !== 'your_resend_api_key_here') {
       try {
-        const resend = new Resend(process.env.RESEND_API_KEY);
+        const resend = new Resend(resendKey);
         await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL || 'contact@erlanglabs.com',
-          to: email,
+          from: process.env.RESEND_FROM_EMAIL ?? 'contact@erlanglabs.com',
+          to:   email,
           subject: 'Thank you for reaching out to ErlangLabs',
           html: `
             <!DOCTYPE html>
@@ -138,54 +228,18 @@ export async function POST(request: Request) {
                   letter-spacing: -0.5px;
                   margin: 0;
                 }
-                .logo span {
-                  color: #FF5B0A;
-                }
-                .content {
-                  padding: 40px 32px;
-                }
-                h1 {
-                  font-size: 24px;
-                  margin-top: 0;
-                  margin-bottom: 16px;
-                  font-weight: 600;
-                  color: #111827;
-                }
-                p {
-                  font-size: 16px;
-                  line-height: 1.6;
-                  margin-top: 0;
-                  margin-bottom: 24px;
-                  color: #4b5563;
-                }
-                .footer {
-                  background-color: #f3f4f6;
-                  padding: 24px 32px;
-                  text-align: center;
-                  font-size: 14px;
-                  color: #6b7280;
-                }
-                
+                .logo span { color: #FF5B0A; }
+                .content { padding: 40px 32px; }
+                h1 { font-size: 24px; margin-top: 0; margin-bottom: 16px; font-weight: 600; color: #111827; }
+                p { font-size: 16px; line-height: 1.6; margin-top: 0; margin-bottom: 24px; color: #4b5563; }
+                .footer { background-color: #f3f4f6; padding: 24px 32px; text-align: center; font-size: 14px; color: #6b7280; }
                 @media (prefers-color-scheme: dark) {
-                  body {
-                    background-color: #030712;
-                  }
-                  .container {
-                    background-color: #111827;
-                    border-color: #1f2937;
-                  }
-                  .header {
-                    background-color: #030712;
-                  }
-                  h1 {
-                    color: #f9fafb;
-                  }
-                  p {
-                    color: #9ca3af;
-                  }
-                  .footer {
-                    background-color: #0f141e;
-                  }
+                  body { background-color: #030712; }
+                  .container { background-color: #111827; border-color: #1f2937; }
+                  .header { background-color: #030712; }
+                  h1 { color: #f9fafb; }
+                  p { color: #9ca3af; }
+                  .footer { background-color: #0f141e; }
                 }
               </style>
             </head>
@@ -206,18 +260,22 @@ export async function POST(request: Request) {
               </div>
             </body>
             </html>
-          `
+          `,
         });
       } catch (emailError) {
         console.error('Failed to send confirmation email:', emailError);
-        // We don't fail the whole request if just the email fails
+        // Non-fatal: don't fail the whole request if email alone fails
       }
     }
 
-    return NextResponse.json({ success: true, message: 'Lead created and email sent successfully' }, { status: 200 });
+    return NextResponse.json(
+      { success: true, message: 'Lead created and email sent successfully' },
+      { status: 200 }
+    );
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
     console.error('Internal Server Error:', error);
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
