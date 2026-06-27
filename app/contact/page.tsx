@@ -2,9 +2,37 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ContactForm from "../components/ContactForm";
 
-export const metadata = {
-  title: "Contact Us — ErlangLabs",
-  description: "Get in touch with the ErlangLabs team to discuss your enterprise AI voice needs.",
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us | ErlangLabs",
+  description: "Get in touch with the ErlangLabs team to discuss your enterprise AI voice needs, schedule a demo, or explore deployment options.",
+  alternates: {
+    canonical: "https://erlanglabs.com/contact",
+  },
+  openGraph: {
+    title: "Contact Us | ErlangLabs",
+    description: "Get in touch with the ErlangLabs team to discuss your enterprise AI voice needs, schedule a demo, or explore deployment options.",
+    url: "https://erlanglabs.com/contact",
+    siteName: "ErlangLabs",
+    images: [
+      {
+        url: "https://erlanglabs.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact ErlangLabs",
+      }
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@erlanglabs",
+    title: "Contact Us | ErlangLabs",
+    description: "Get in touch with the ErlangLabs team to discuss your enterprise AI voice needs.",
+    images: ["https://erlanglabs.com/og-image.jpg"],
+  },
 };
 
 export default function ContactPage() {

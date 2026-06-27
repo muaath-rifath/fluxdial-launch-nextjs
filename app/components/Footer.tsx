@@ -12,28 +12,28 @@ export default function Footer() {
             © 2024 ErlangLabs AI. All rights reserved. Precision voice engagement.
           </p>
         </div>
-        <div className="flex flex-col gap-2">
+        <nav aria-label="Product navigation" className="flex flex-col gap-2">
           <span className="font-mono text-sm font-medium text-on-surface">Product</span>
           <Link href="#features" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Features</Link>
           <Link href="#pricing" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Pricing</Link>
           <Link href="#docs" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Documentation</Link>
-        </div>
-        <div className="flex flex-col gap-2">
+        </nav>
+        <nav aria-label="Company navigation" className="flex flex-col gap-2">
           <span className="font-mono text-sm font-medium text-on-surface">Company</span>
           <Link href="#careers" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Careers</Link>
           <Link href="#blog" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Blog</Link>
-        </div>
-        <div className="flex flex-col gap-2">
+        </nav>
+        <nav aria-label="Resources navigation" className="flex flex-col gap-2">
           <span className="font-mono text-sm font-medium text-on-surface">Resources</span>
           <Link href="#api" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">API Reference</Link>
           <Link href="#community" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Community</Link>
           <Link href="#status" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Status</Link>
-        </div>
-        <div className="flex flex-col gap-2">
+        </nav>
+        <nav aria-label="Legal navigation" className="flex flex-col gap-2">
           <span className="font-mono text-sm font-medium text-on-surface">Legal</span>
           <Link href="/privacy" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Privacy</Link>
           <Link href="/terms" className="font-inter text-sm text-secondary transition-colors hover:text-primary-container">Terms</Link>
-        </div>
+        </nav>
       </div>
     </footer>
   );

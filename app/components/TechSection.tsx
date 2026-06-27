@@ -31,7 +31,7 @@ export default function TechSection() {
             </li>
           </ul>
         </div>
-        <div className="mt-12 lg:col-span-6 lg:mt-0">
+        <aside className="mt-12 lg:col-span-6 lg:mt-0">
           <div className="bento-card overflow-x-auto bg-[#0a0a0a] p-4 font-mono text-sm text-surface-container-lowest">
             <div className="mb-4 flex gap-2 border-b border-surface-border pb-2">
               <span className="h-3 w-3 rounded-full bg-error"></span>
@@ -54,7 +54,7 @@ export default function TechSection() {
               {"  "}<span className="text-white">callback_requested:</span> <span className="text-tertiary">false</span>
             </code></pre>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
   );

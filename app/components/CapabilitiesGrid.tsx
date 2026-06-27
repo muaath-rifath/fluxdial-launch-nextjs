@@ -10,7 +10,7 @@ export default function CapabilitiesGrid() {
       
       <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-2 lg:grid-cols-3">
         {/* Large Card */}
-        <div className="bento-card group flex flex-col justify-between p-8 transition-colors hover:border-outline md:col-span-2">
+        <article className="bento-card group flex flex-col justify-between p-8 transition-colors hover:border-outline md:col-span-2">
           <div className="mb-12">
             <svg className="mb-4 text-primary-container" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
@@ -28,10 +28,10 @@ export default function CapabilitiesGrid() {
   "budget_confirmed": true
 }`}</code></pre>
           </div>
-        </div>
+        </article>
 
         {/* Small Card 1 */}
-        <div className="bento-card group flex flex-col justify-between p-6 transition-colors hover:border-outline">
+        <article className="bento-card group flex flex-col justify-between p-6 transition-colors hover:border-outline">
           <div className="mb-6">
             <svg className="mb-4 text-primary-container" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
@@ -52,10 +52,10 @@ export default function CapabilitiesGrid() {
   "sync_to_cal": true
 }`}</code></pre>
           </div>
-        </div>
+        </article>
 
         {/* Small Card 2 */}
-        <div className="bento-card group flex flex-col justify-between p-6 transition-colors hover:border-outline">
+        <article className="bento-card group flex flex-col justify-between p-6 transition-colors hover:border-outline">
           <div className="mb-6">
             <svg className="mb-4 text-primary-container" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="10" cy="8" r="5" />
@@ -75,10 +75,10 @@ export default function CapabilitiesGrid() {
   "verified": true
 }`}</code></pre>
           </div>
-        </div>
+        </article>
 
         {/* Medium Card */}
-        <div className="bento-card group flex flex-col items-center gap-[var(--spacing-gutter)] p-6 transition-colors hover:border-outline md:col-span-2 md:flex-row">
+        <article className="bento-card group flex flex-col items-center gap-[var(--spacing-gutter)] p-6 transition-colors hover:border-outline md:col-span-2 md:flex-row">
           <div className="flex-1">
             <svg className="mb-4 text-primary-container" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10" />
@@ -100,7 +100,7 @@ export default function CapabilitiesGrid() {
               <div className="h-2/3 w-1/6 rounded-t bg-surface-bright"></div>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </section>
   );

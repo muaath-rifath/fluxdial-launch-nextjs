@@ -1,9 +1,28 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-export const metadata = {
-  title: "Privacy Policy — ErlangLabs",
-  description: "Privacy policy and data handling practices for ErlangLabs.",
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | ErlangLabs",
+  description: "Privacy policy and data handling practices for ErlangLabs. Learn how we protect and manage your enterprise data.",
+  alternates: {
+    canonical: "https://erlanglabs.com/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | ErlangLabs",
+    description: "Privacy policy and data handling practices for ErlangLabs. Learn how we protect and manage your enterprise data.",
+    url: "https://erlanglabs.com/privacy",
+    siteName: "ErlangLabs",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    site: "@erlanglabs",
+    title: "Privacy Policy | ErlangLabs",
+    description: "Privacy policy and data handling practices for ErlangLabs.",
+  },
 };
 
 export default function PrivacyPage() {

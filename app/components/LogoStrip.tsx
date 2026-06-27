@@ -5,13 +5,13 @@ export default function LogoStrip() {
         <p className="text-center font-mono text-xs font-medium uppercase tracking-[0.1em] text-secondary">
           Powering Campaigns For
         </p>
-        <div className="mt-4 flex flex-wrap justify-center gap-8 opacity-60 grayscale md:gap-16">
-          <span className="font-geist text-xl font-bold tracking-tighter text-on-surface">Healthcare</span>
-          <span className="font-geist text-xl font-bold tracking-tighter text-on-surface">Education</span>
-          <span className="font-geist text-xl font-bold tracking-tighter text-on-surface">Recruitment</span>
-          <span className="font-geist text-xl font-bold tracking-tighter text-on-surface">Government</span>
-          <span className="font-geist text-xl font-bold tracking-tighter text-on-surface">Real Estate</span>
-        </div>
+        <ul aria-label="Industries we serve" className="mt-4 flex flex-wrap justify-center gap-8 opacity-60 grayscale md:gap-16 list-none p-0 m-0">
+          <li className="font-geist text-xl font-bold tracking-tighter text-on-surface">Healthcare</li>
+          <li className="font-geist text-xl font-bold tracking-tighter text-on-surface">Education</li>
+          <li className="font-geist text-xl font-bold tracking-tighter text-on-surface">Recruitment</li>
+          <li className="font-geist text-xl font-bold tracking-tighter text-on-surface">Government</li>
+          <li className="font-geist text-xl font-bold tracking-tighter text-on-surface">Real Estate</li>
+        </ul>
       </div>
     </section>
   );

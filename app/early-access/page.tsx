@@ -2,9 +2,37 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import EarlyAccessForm from "../components/EarlyAccessForm";
 
-export const metadata = {
-  title: "Get Early Access — ErlangLabs",
-  description: "Join the ErlangLabs early access waitlist to deploy enterprise AI voice agents.",
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Get Early Access | ErlangLabs",
+  description: "Join the ErlangLabs early access waitlist to deploy enterprise AI voice agents. Automate your customer engagement with our cutting-edge voice infrastructure.",
+  alternates: {
+    canonical: "https://erlanglabs.com/early-access",
+  },
+  openGraph: {
+    title: "Get Early Access | ErlangLabs",
+    description: "Join the ErlangLabs early access waitlist to deploy enterprise AI voice agents. Automate your customer engagement with our cutting-edge voice infrastructure.",
+    url: "https://erlanglabs.com/early-access",
+    siteName: "ErlangLabs",
+    images: [
+      {
+        url: "https://erlanglabs.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Get Early Access to ErlangLabs",
+      }
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@erlanglabs",
+    title: "Get Early Access | ErlangLabs",
+    description: "Join the ErlangLabs early access waitlist to deploy enterprise AI voice agents.",
+    images: ["https://erlanglabs.com/og-image.jpg"],
+  },
 };
 
 export default function EarlyAccessPage() {
