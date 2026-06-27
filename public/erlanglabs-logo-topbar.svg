@@ -61,14 +61,14 @@
         
         <!-- Custom text-colored L with subtle geometric cuts mirroring the E -->
         <g class="labs-group">
-            <path d="M 1055 85 
-                     L 1090 85 
-                     L 1075 200 
-                     L 1083 285 
+            <path d="M 1058 85 
+                     L 1112 85 
+                     L 1094 115 
+                     L 1094 270 
+                     L 1112 285 
                      L 1205 285 
                      L 1187 315 
-                     L 1050 315 
-                     L 1040 200 Z" 
+                     L 1058 315 Z" 
                   class="logo-text-path" />
                   
             <text x="1220" y="315" class="logo-text" font-size="240" font-weight="800" text-anchor="start">abs</text>
