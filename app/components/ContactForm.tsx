@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function ContactForm() {
     message: ''
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileInstance>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,23 +21,35 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!turnstileToken) {
+      setStatus('error');
+      return;
+    }
+
     setStatus('loading');
 
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, turnstileToken })
       });
 
       if (res.ok) {
         setStatus('success');
         setFormData({ firstName: '', lastName: '', email: '', company: '', message: '' });
+        setTurnstileToken(null);
       } else {
         setStatus('error');
+        // Reset widget so user can try again
+        turnstileRef.current?.reset();
+        setTurnstileToken(null);
       }
     } catch (error) {
       setStatus('error');
+      turnstileRef.current?.reset();
+      setTurnstileToken(null);
     }
   };
 
@@ -141,9 +156,20 @@ export default function ContactForm() {
         <p className="text-sm text-error">An error occurred while sending your request. Please try again.</p>
       )}
 
+      <div className="flex justify-start">
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+          onSuccess={(token) => setTurnstileToken(token)}
+          onExpire={() => setTurnstileToken(null)}
+          onError={() => setTurnstileToken(null)}
+          options={{ theme: 'auto' }}
+        />
+      </div>
+
       <button 
         type="submit" 
-        disabled={status === 'loading'}
+        disabled={status === 'loading' || !turnstileToken}
         className="btn-primary mt-2 w-full text-center sm:w-auto sm:self-end disabled:opacity-70 disabled:cursor-not-allowed"
       >
         {status === 'loading' ? 'Sending...' : 'Send Message'}

@@ -15,10 +15,44 @@ async function getZohoAccessToken() {
   return data.access_token;
 }
 
+// Verify Cloudflare Turnstile token server-side
+async function verifyTurnstileToken(token: string, remoteip?: string): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    console.error('TURNSTILE_SECRET_KEY is not configured');
+    return false;
+  }
+
+  const formData = new URLSearchParams();
+  formData.append('secret', secret);
+  formData.append('response', token);
+  if (remoteip) formData.append('remoteip', remoteip);
+
+  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData.toString(),
+  });
+
+  const data = await res.json();
+  return data.success === true;
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { firstName, lastName, email, company, message } = body;
+    const { firstName, lastName, email, company, message, turnstileToken } = body;
+
+    // Verify Turnstile CAPTCHA before anything else
+    if (!turnstileToken) {
+      return NextResponse.json({ error: 'CAPTCHA token missing' }, { status: 400 });
+    }
+
+    const ip = request.headers.get('CF-Connecting-IP') ?? request.headers.get('X-Forwarded-For') ?? undefined;
+    const isHuman = await verifyTurnstileToken(turnstileToken, ip ?? undefined);
+    if (!isHuman) {
+      return NextResponse.json({ error: 'CAPTCHA verification failed' }, { status: 400 });
+    }
 
     // Basic validation
     if (!lastName || !email) {
