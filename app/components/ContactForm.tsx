@@ -13,6 +13,7 @@ export default function ContactForm() {
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState(false);
   const turnstileRef = useRef<TurnstileInstance>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -157,19 +158,25 @@ export default function ContactForm() {
       )}
 
       <div className="flex justify-start">
-        <Turnstile
-          ref={turnstileRef}
-          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-          onSuccess={(token) => setTurnstileToken(token)}
-          onExpire={() => setTurnstileToken(null)}
-          onError={() => setTurnstileToken(null)}
-          options={{ theme: 'auto' }}
-        />
+        {turnstileError ? (
+          <p className="text-sm text-error">
+            CAPTCHA failed to load. Please refresh the page and try again.
+          </p>
+        ) : (
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
+            onExpire={() => setTurnstileToken(null)}
+            onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
+            options={{ theme: 'auto' }}
+          />
+        )}
       </div>
 
       <button 
         type="submit" 
-        disabled={status === 'loading' || !turnstileToken}
+        disabled={status === 'loading'}
         className="btn-primary mt-2 w-full text-center sm:w-auto sm:self-end disabled:opacity-70 disabled:cursor-not-allowed"
       >
         {status === 'loading' ? 'Sending...' : 'Send Message'}
