@@ -2,8 +2,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Get Early Access — FluxDial",
-  description: "Join the FluxDial early access waitlist to deploy enterprise AI voice agents.",
+  title: "Get Early Access — ErlangLabs",
+  description: "Join the ErlangLabs early access waitlist to deploy enterprise AI voice agents.",
 };
 
 export default function EarlyAccessPage() {
@@ -17,7 +17,7 @@ export default function EarlyAccessPage() {
               Join the Waitlist
             </h1>
             <p className="font-inter text-lg text-secondary">
-              Be among the first to experience FluxDial's enterprise-grade AI voice infrastructure. Sign up below to get early access.
+              Be among the first to experience ErlangLabs's enterprise-grade AI voice infrastructure. Sign up below to get early access.
             </p>
           </div>
 

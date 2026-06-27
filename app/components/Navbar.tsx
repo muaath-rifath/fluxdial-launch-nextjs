@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -45,8 +46,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-surface-border bg-surface-container-lowest/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[var(--container-max)] items-center justify-between px-4 sm:px-[var(--spacing-gutter)] md:px-10">
         <div className="flex items-center gap-[var(--spacing-gutter)]">
-          <Link href="/" className="font-geist text-xl font-bold tracking-tight text-on-surface">
-            Flux<span className="text-primary-container">Dial</span>
+          <Link href="/" className="flex items-center">
+            <Image src="/erlanglabs-logo-topbar.svg" alt="ErlangLabs Logo" width={700} height={140} className="h-8 w-auto object-contain" />
           </Link>
           <nav className="hidden items-center gap-[var(--spacing-gutter)] pt-1 lg:flex">
             <Link

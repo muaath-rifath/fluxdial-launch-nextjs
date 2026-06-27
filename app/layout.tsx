@@ -22,7 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FluxDial — AI Voice Engagement Platform",
+  title: "ErlangLabs — AI Voice Engagement Platform",
   description: "The Voice Infrastructure for Enterprise AI. Deploy intelligent voice agents that sound human and reason like software.",
 };
 
@@ -35,6 +35,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, inter.variable, jetbrainsMono.variable, "font-sans", figtree.variable)}
+      data-scroll-behavior="smooth"
     >
       <body className="min-h-full flex flex-col overflow-x-clip">
         <InteractiveBackground />

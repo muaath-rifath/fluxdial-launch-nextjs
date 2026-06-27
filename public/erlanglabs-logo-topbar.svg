@@ -1,0 +1,77 @@
+<svg viewBox="20 70 1700 340" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&amp;display=swap');
+        .logo-text {
+            font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+            fill: #3c4249;
+        }
+        .logo-text-path {
+            fill: #3c4249;
+            stroke: #3c4249;
+            stroke-width: 5px;
+            stroke-linejoin: round;
+        }
+        .labs-group {
+            transform: translateX(-100px);
+        }
+        @media (prefers-color-scheme: dark) {
+            .logo-text {
+                fill: #e5e2e1;
+            }
+            .logo-text-path {
+                fill: #e5e2e1;
+                stroke: #e5e2e1;
+            }
+            .labs-group {
+                transform: translateX(-20px);
+            }
+        }
+    </style>
+    
+    <g id="logo-mark">
+        <path d="M 140 85 
+                 L 300 85 
+                 L 282 115 
+                 L 192 115 
+                 L 140 185 
+                 L 254 185 
+                 L 236 215 
+                 L 140 215 
+                 L 192 285 
+                 L 268 285 
+                 L 250 315 
+                 L 140 315 
+                 L 80 200 Z" 
+              fill="#eb4700" 
+              stroke="#eb4700" 
+              stroke-width="5" 
+              stroke-linejoin="round" />
+
+        <!-- Top Right Node & Connection Line -->
+        <line x1="285" y1="91" x2="340" y2="91" stroke="#eb4700" stroke-width="9" />
+        <circle cx="352" cy="91" r="11" fill="#ffffff" stroke="#eb4700" stroke-width="8" />
+
+        <!-- Bottom Left Node & Connection Line -->
+        <line x1="60" y1="309" x2="140" y2="309" stroke="#eb4700" stroke-width="9" />
+        <circle cx="48" cy="309" r="11" fill="#ffffff" stroke="#eb4700" stroke-width="8" />
+    </g>
+
+    <g id="logo-typography">
+        <text x="300" y="315" class="logo-text" font-size="240" font-weight="800" text-anchor="start">rlang</text>
+        
+        <!-- Custom text-colored L with subtle geometric cuts mirroring the E -->
+        <g class="labs-group">
+            <path d="M 1055 85 
+                     L 1090 85 
+                     L 1075 200 
+                     L 1083 285 
+                     L 1205 285 
+                     L 1187 315 
+                     L 1050 315 
+                     L 1040 200 Z" 
+                  class="logo-text-path" />
+                  
+            <text x="1220" y="315" class="logo-text" font-size="240" font-weight="800" text-anchor="start">abs</text>
+        </g>
+    </g>
+</svg>

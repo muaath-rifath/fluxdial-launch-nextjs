@@ -5,7 +5,7 @@ export default function TechSection() {
         <div className="flex flex-col gap-4 pr-0 lg:col-span-6 lg:pr-12">
           <h2 className="font-geist text-3xl font-bold tracking-tight text-on-surface sm:text-4xl">Intelligent Campaign Execution</h2>
           <p className="font-inter text-base font-medium leading-relaxed text-secondary sm:text-lg">
-            Upload your contact lists, schedule campaigns, and define success criteria. FluxDial handles the dialing, connects the AI agent, and automatically extracts crucial insights into structured schemas.
+            Upload your contact lists, schedule campaigns, and define success criteria. ErlangLabs handles the dialing, connects the AI agent, and automatically extracts crucial insights into structured schemas.
           </p>
           <ul className="mt-2 flex flex-col gap-2">
             <li className="flex items-start gap-2">

@@ -2,8 +2,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Terms and Conditions — FluxDial",
-  description: "Terms of service and acceptable use policy for FluxDial.",
+  title: "Terms and Conditions — ErlangLabs",
+  description: "Terms of service and acceptable use policy for ErlangLabs.",
 };
 
 export default function TermsPage() {
@@ -25,14 +25,14 @@ export default function TermsPage() {
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">1. Acceptance of Terms</h2>
               <p>
-                By accessing and using the FluxDial platform, website, and associated APIs (the "Services"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these terms, please do not use our Services.
+                By accessing and using the ErlangLabs platform, website, and associated APIs (the "Services"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these terms, please do not use our Services.
               </p>
             </section>
 
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">2. Description of Service</h2>
               <p>
-                FluxDial provides an enterprise voice infrastructure platform that allows users to deploy AI voice agents for automated outbound and inbound calling, data extraction, and campaign management. The Services are provided "as is" and "as available".
+                ErlangLabs provides an enterprise voice infrastructure platform that allows users to deploy AI voice agents for automated outbound and inbound calling, data extraction, and campaign management. The Services are provided "as is" and "as available".
               </p>
             </section>
 
@@ -48,28 +48,28 @@ export default function TermsPage() {
                 <li>Attempting to interfere with or compromise the system integrity or security of the platform.</li>
               </ul>
               <p>
-                FluxDial reserves the right to immediately suspend or terminate accounts that violate this Acceptable Use Policy.
+                ErlangLabs reserves the right to immediately suspend or terminate accounts that violate this Acceptable Use Policy.
               </p>
             </section>
 
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">4. Data and Intellectual Property</h2>
               <p>
-                You retain all rights to the contact data and schemas you upload to the platform. FluxDial retains all rights, title, and interest in and to the platform, including all associated intellectual property rights. You grant us a limited license to process your data solely to provide the Services.
+                You retain all rights to the contact data and schemas you upload to the platform. ErlangLabs retains all rights, title, and interest in and to the platform, including all associated intellectual property rights. You grant us a limited license to process your data solely to provide the Services.
               </p>
             </section>
 
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">5. Limitation of Liability</h2>
               <p>
-                To the maximum extent permitted by applicable law, FluxDial shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, resulting from your use of the Services or any telecommunications compliance failures on your part.
+                To the maximum extent permitted by applicable law, ErlangLabs shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, resulting from your use of the Services or any telecommunications compliance failures on your part.
               </p>
             </section>
 
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">6. Contact Information</h2>
               <p>
-                For any questions regarding these Terms and Conditions, please contact us at <a href="mailto:contact@fluxdial.live" className="text-primary-container hover:underline">contact@fluxdial.live</a>.
+                For any questions regarding these Terms and Conditions, please contact us at <a href="mailto:contact@erlanglabs.com" className="text-primary-container hover:underline">contact@erlanglabs.com</a>.
               </p>
             </section>
           </div>

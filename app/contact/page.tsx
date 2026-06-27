@@ -2,8 +2,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Contact Us — FluxDial",
-  description: "Get in touch with the FluxDial team to discuss your enterprise AI voice needs.",
+  title: "Contact Us — ErlangLabs",
+  description: "Get in touch with the ErlangLabs team to discuss your enterprise AI voice needs.",
 };
 
 export default function ContactPage() {
@@ -20,7 +20,7 @@ export default function ContactPage() {
               Interested in deploying enterprise-grade AI voice agents? Our team is ready to help you build the perfect communication infrastructure.
             </p>
             <p className="mt-4 font-inter text-base text-secondary">
-              Or email us directly at <a href="mailto:contact@fluxdial.live" className="text-primary-container hover:underline">contact@fluxdial.live</a>
+              Or email us directly at <a href="mailto:contact@erlanglabs.com" className="text-primary-container hover:underline">contact@erlanglabs.com</a>
             </p>
           </div>
 

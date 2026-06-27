@@ -1,0 +1,27 @@
+<svg viewBox="20 60 360 280" xmlns="http://www.w3.org/2000/svg">
+    <g id="logo-mark">
+        <path d="M 140 85 
+                 L 300 85 
+                 L 282 115 
+                 L 192 115 
+                 L 140 185 
+                 L 254 185 
+                 L 236 215 
+                 L 140 215 
+                 L 192 285 
+                 L 268 285 
+                 L 250 315 
+                 L 140 315 
+                 L 80 200 Z" 
+              fill="#FF5722" 
+              stroke="#FF5722" 
+              stroke-width="5" 
+              stroke-linejoin="round" />
+
+        <line x1="285" y1="91" x2="340" y2="91" stroke="#FF5722" stroke-width="9" />
+        <circle cx="352" cy="91" r="11" fill="#ffffff" stroke="#FF5722" stroke-width="8" />
+
+        <line x1="60" y1="309" x2="140" y2="309" stroke="#FF5722" stroke-width="9" />
+        <circle cx="48" cy="309" r="11" fill="#ffffff" stroke="#FF5722" stroke-width="8" />
+    </g>
+</svg>

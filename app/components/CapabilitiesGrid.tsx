@@ -4,7 +4,7 @@ export default function CapabilitiesGrid() {
       <div className="mb-12">
         <h2 className="mb-2 font-geist text-3xl font-bold tracking-tight text-on-surface sm:text-4xl">Domain-Agnostic Voice Campaigns</h2>
         <p className="max-w-3xl font-inter text-base font-medium leading-relaxed text-secondary sm:text-lg">
-          From customer feedback to school announcements, FluxDial enables organizations to automate outbound communication, engage dynamically, and collect structured insights across any industry.
+          From customer feedback to school announcements, ErlangLabs enables organizations to automate outbound communication, engage dynamically, and collect structured insights across any industry.
         </p>
       </div>
       

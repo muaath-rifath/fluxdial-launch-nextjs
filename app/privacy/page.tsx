@@ -2,8 +2,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Privacy Policy — FluxDial",
-  description: "Privacy policy and data handling practices for FluxDial.",
+  title: "Privacy Policy — ErlangLabs",
+  description: "Privacy policy and data handling practices for ErlangLabs.",
 };
 
 export default function PrivacyPage() {
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">1. Information We Collect</h2>
               <p>
-                At FluxDial, we collect information that you provide directly to us when you create an account, use our AI voice engagement platform, or communicate with us. This may include your name, email address, company details, billing information, and the contact lists or data schemas you upload for campaigns.
+                At ErlangLabs, we collect information that you provide directly to us when you create an account, use our AI voice engagement platform, or communicate with us. This may include your name, email address, company details, billing information, and the contact lists or data schemas you upload for campaigns.
               </p>
               <p>
                 We also automatically collect certain information about your device and usage of our services, including IP addresses, browser types, and log data related to call metrics and agent performance.
@@ -35,7 +35,7 @@ export default function PrivacyPage() {
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">2. How We Use Your Information</h2>
               <p>
-                The information we collect is strictly used to operate, maintain, and improve the FluxDial platform. This includes:
+                The information we collect is strictly used to operate, maintain, and improve the ErlangLabs platform. This includes:
               </p>
               <ul className="ml-6 list-disc flex flex-col gap-2">
                 <li>Executing outbound and inbound AI voice campaigns on your behalf.</li>
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
             <section className="flex flex-col gap-4">
               <h2 className="font-geist text-2xl font-semibold text-on-surface">5. Contact Us</h2>
               <p>
-                If you have any questions about this Privacy Policy or our data practices, please contact our data protection team at <a href="mailto:contact@fluxdial.live" className="text-primary-container hover:underline">contact@fluxdial.live</a>.
+                If you have any questions about this Privacy Policy or our data practices, please contact our data protection team at <a href="mailto:contact@erlanglabs.com" className="text-primary-container hover:underline">contact@erlanglabs.com</a>.
               </p>
             </section>
           </div>

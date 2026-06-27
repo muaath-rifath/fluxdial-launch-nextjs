@@ -6,10 +6,10 @@ export default function Footer() {
       <div className="mx-auto grid max-w-[var(--container-max)] grid-cols-2 gap-[var(--spacing-gutter)] px-4 py-16 sm:px-[var(--spacing-gutter)] md:grid-cols-4 md:px-10 lg:grid-cols-6">
         <div className="col-span-2 flex flex-col gap-2">
           <span className="font-geist text-xl font-bold tracking-tight text-on-surface">
-            Flux<span className="text-primary-container">Dial</span>
+            Erlang<span className="text-primary-container">Labs</span>
           </span>
           <p className="font-inter text-sm text-secondary">
-            © 2024 FluxDial AI. All rights reserved. Precision voice engagement.
+            © 2024 ErlangLabs AI. All rights reserved. Precision voice engagement.
           </p>
         </div>
         <div className="flex flex-col gap-2">

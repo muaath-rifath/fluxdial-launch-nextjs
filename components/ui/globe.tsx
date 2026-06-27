@@ -13,6 +13,14 @@ declare module "@react-three/fiber" {
   }
 }
 
+if (typeof console !== 'undefined') {
+  const originalWarn = console.warn;
+  console.warn = (...args) => {
+    if (args.length > 0 && typeof args[0] === 'string' && args[0].includes('THREE.Clock')) return;
+    originalWarn(...args);
+  };
+}
+
 extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 3;
