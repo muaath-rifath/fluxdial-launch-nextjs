@@ -79,7 +79,7 @@ export default function CapabilitiesGrid() {
 
         {/* Medium Card */}
         <article className="bento-card group flex flex-col items-center gap-[var(--spacing-gutter)] p-6 transition-colors hover:border-outline md:col-span-2 md:flex-row">
-          <div className="flex-1">
+          <div className="w-full md:flex-1">
             <svg className="mb-4 text-primary-container" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10" />
               <path d="M14 2v4a2 2 0 0 0 2 2h4" />
@@ -91,7 +91,7 @@ export default function CapabilitiesGrid() {
               Automatically conduct conversational outbound surveys to gather actionable customer feedback, clarify intent, and process structured responses efficiently.
             </p>
           </div>
-          <div className="flex h-32 w-full flex-1 items-center justify-center bento-inner-card">
+          <div className="flex h-32 w-full md:flex-1 items-center justify-center bento-inner-card">
             <div className="flex h-full w-full items-end justify-between gap-1 px-4">
               <div className="h-1/4 w-1/6 rounded-t bg-surface-bright"></div>
               <div className="h-1/2 w-1/6 rounded-t bg-surface-bright"></div>

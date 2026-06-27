@@ -12,11 +12,11 @@ export default function HeroSection() {
         <p className="max-w-2xl font-inter text-base leading-relaxed text-secondary sm:text-lg">
           Deploy intelligent voice agents that automatically reach people over phone calls, hold natural conversations, deliver information, and return structured outcomes at scale.
         </p>
-        <div className="mt-2 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-          <Link href="/early-access" className="btn-primary text-center">
+        <div className="mt-2 flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center justify-center lg:justify-start">
+          <Link href="/early-access" className="btn-primary w-full text-center sm:w-auto">
             Get Early Access
           </Link>
-          <Link href="#features" className="btn-secondary">
+          <Link href="#features" className="btn-secondary w-full sm:w-auto">
             Explore Features
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
