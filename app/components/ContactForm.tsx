@@ -181,8 +181,7 @@ export default function ContactForm() {
             onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
             onExpire={() => setTurnstileToken(null)}
             onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
-            options={{ theme: 'auto', size: 'flexible' }}
-            className="w-full [&>div]:!min-w-0 [&>iframe]:!min-w-0"
+            options={{ theme: 'auto', size: 'compact' }}
           />
         )}
       </div>
