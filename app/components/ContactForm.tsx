@@ -169,22 +169,22 @@ export default function ContactForm() {
         <p className="text-sm text-error">An error occurred while sending your request. Please try again.</p>
       )}
 
-      <div className="w-full max-w-full overflow-hidden flex justify-start">
+      <div className="w-full max-w-full overflow-hidden flex justify-center">
         {turnstileError ? (
           <p className="text-sm text-error">
             CAPTCHA failed to load. Please refresh the page and try again.
           </p>
         ) : (
-          <Turnstile
-            ref={turnstileRef}
-            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-            onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
-            onExpire={() => setTurnstileToken(null)}
-            onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
-            options={{ theme: 'auto', size: 'normal' }}
-            className="w-full max-w-full"
-            style={{ maxWidth: '100%', overflow: 'hidden' }}
-          />
+          <div className="transform scale-[0.85] sm:scale-100 origin-center">
+            <Turnstile
+              ref={turnstileRef}
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+              onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
+              onExpire={() => setTurnstileToken(null)}
+              onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
+              options={{ theme: 'auto', size: 'normal' }}
+            />
+          </div>
         )}
       </div>
 
