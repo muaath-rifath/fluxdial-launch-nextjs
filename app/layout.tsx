@@ -42,6 +42,16 @@ export const metadata: Metadata = {
     siteName: "ErlangLabs",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "https://erlanglabs.com/opengraph-image",
+        secureUrl: "https://erlanglabs.com/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "ErlangLabs - Enterprise AI Voice Agents",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -49,6 +59,7 @@ export const metadata: Metadata = {
     creator: "@erlanglabs",
     title: "ErlangLabs | AI Voice Engagement Platform",
     description: "The Voice Infrastructure for Enterprise AI. Deploy intelligent voice agents that sound human and reason like software.",
+    images: ["https://erlanglabs.com/opengraph-image"],
   },
   robots: {
     index: true,

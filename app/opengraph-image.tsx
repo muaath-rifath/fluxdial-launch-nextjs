@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 // Route segment config
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 // Image metadata
 export const alt = 'ErlangLabs - Enterprise AI Voice Agents';
@@ -114,6 +114,9 @@ export default async function Image() {
     ),
     {
       ...size,
+      headers: {
+        'Cache-Control': 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=3600',
+      },
     }
   );
 }
