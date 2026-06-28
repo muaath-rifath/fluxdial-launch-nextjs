@@ -184,7 +184,8 @@ export default function EarlyAccessForm() {
             onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
             onExpire={() => setTurnstileToken(null)}
             onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
-            options={{ theme: 'auto' }}
+            options={{ theme: 'auto', size: 'flexible' }}
+            className="w-full [&>div]:!min-w-0 [&>iframe]:!min-w-0"
           />
         )}
       </div>
