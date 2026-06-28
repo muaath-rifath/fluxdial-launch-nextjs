@@ -172,7 +172,7 @@ export default function EarlyAccessForm() {
         <p className="text-sm text-error">An error occurred while sending your request. Please try again.</p>
       )}
 
-      <div className="w-full">
+      <div className="w-full max-w-full overflow-hidden flex justify-start">
         {turnstileError ? (
           <p className="text-sm text-error">
             CAPTCHA failed to load. Please refresh the page and try again.
@@ -184,9 +184,9 @@ export default function EarlyAccessForm() {
             onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
             onExpire={() => setTurnstileToken(null)}
             onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
-            options={{ theme: 'auto', size: 'flexible' }}
-            className="w-full [&_iframe]:!min-w-0 [&_iframe]:!w-full [&_div]:!min-w-0 [&_div]:!w-full"
-            style={{ width: '100%' }}
+            options={{ theme: 'auto', size: 'normal' }}
+            className="w-full max-w-full"
+            style={{ maxWidth: '100%', overflow: 'hidden' }}
           />
         )}
       </div>
