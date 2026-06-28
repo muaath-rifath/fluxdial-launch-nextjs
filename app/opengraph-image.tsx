@@ -62,8 +62,8 @@ export default async function Image() {
            */}
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 0 }}>
 
-            {/* E mark: x=37–363, y=80–315 → ends at y=315 (baseline) */}
-            <svg viewBox="37 80 326 235" width={fs(326)} height={fs(235)} xmlns="http://www.w3.org/2000/svg">
+            {/* E mark: viewBox padded so nodes/strokes aren't clipped */}
+            <svg viewBox="25 68 350 252" width={fs(350)} height={fs(252)} xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M 140 85 L 300 85 L 282 115 L 192 115 L 140 185 L 254 185 L 236 215 L 140 215 L 192 285 L 268 285 L 250 315 L 140 315 L 80 200 Z"
                 fill="#eb4700" stroke="#eb4700" strokeWidth="5" strokeLinejoin="round"
@@ -74,14 +74,14 @@ export default async function Image() {
               <circle cx="48" cy="309" r="11" fill="#0a0a0a" stroke="#eb4700" strokeWidth="8" />
             </svg>
 
-            {/* "rlang" — font-size = 240 SVG units × SCALE */}
+            {/* "rlang" — confirmed value from og-preview: marginLeft=-60px */}
             <span style={{
               fontFamily: 'Montserrat',
               fontSize: `${fs(240)}px`,
               fontWeight: 800,
               color: '#e5e2e1',
               lineHeight: 1,
-              marginLeft: '-4px',
+              marginLeft: '-60px',
             }}>
               rlang
             </span>
@@ -94,14 +94,14 @@ export default async function Image() {
               />
             </svg>
 
-            {/* "abs" — same font size */}
+            {/* "abs" — confirmed value from og-preview: marginLeft=1px */}
             <span style={{
               fontFamily: 'Montserrat',
               fontSize: `${fs(240)}px`,
               fontWeight: 800,
               color: '#e5e2e1',
               lineHeight: 1,
-              marginLeft: '-2px',
+              marginLeft: '1px',
             }}>
               abs
             </span>
@@ -112,7 +112,7 @@ export default async function Image() {
             marginTop: '44px',
             fontSize: '38px',
             fontWeight: 500,
-            color: '#808080',
+            color: '#b0b0b0',
             textAlign: 'center',
             fontFamily: 'Montserrat',
             display: 'flex',
