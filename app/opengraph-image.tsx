@@ -55,19 +55,15 @@ export default async function Image() {
            *
            * Satori does NOT correctly implement alignItems:'baseline' for SVG
            * replaced elements (it uses top/center instead of bottom edge).
-           * Fix: use alignItems:'flex-end' and extend both SVG viewBoxes BELOW
-           * y=315 (the visual baseline) by the font descender depth.
-           *
-           * Montserrat 800 descender ≈ 20% of font-size = 240*0.2 = 48 SVG units.
-           * Extended viewBox bottoms: y = 315 + 48 = 363.
-           * With flex-end: SVG box bottom = text span box bottom.
-           * Text baseline = span bottom − descender (48 SVG units scaled).
-           * SVG visual baseline (y=315) = SVG bottom − 48 units scaled = text baseline ✓
+           * Fix: use alignItems:'flex-end' to align the bottom bounding boxes,
+           * and use transform: translateY(-19px) to visually push the SVGs UP
+           * so their bottoms sit precisely on the text baseline.
+           * (Offset of -19px was visually confirmed via the /og-preview tool)
            */}
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 0 }}>
 
-            {/* E mark: y=68 → 363 (315+48). Fully includes bottom-left node circle. */}
-            <svg viewBox="25 68 350 295" width={fs(350)} height={fs(295)} xmlns="http://www.w3.org/2000/svg">
+            {/* E mark: y=68 → 320 (height=252). Fully includes bottom-left node circle. */}
+            <svg viewBox="25 68 350 252" width={fs(350)} height={fs(252)} style={{ transform: 'translateY(-19px)' }} xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M 140 85 L 300 85 L 282 115 L 192 115 L 140 185 L 254 185 L 236 215 L 140 215 L 192 285 L 268 285 L 250 315 L 140 315 L 80 200 Z"
                 fill="#eb4700" stroke="#eb4700" strokeWidth="5" strokeLinejoin="round"
@@ -90,8 +86,8 @@ export default async function Image() {
               rlang
             </span>
 
-            {/* L path: y=85 → 363 (315+48) */}
-            <svg viewBox="949 85 147 278" width={fs(147)} height={fs(278)} xmlns="http://www.w3.org/2000/svg">
+            {/* L path: y=85 → 315 (height=230) */}
+            <svg viewBox="949 85 147 230" width={fs(147)} height={fs(230)} style={{ transform: 'translateY(-19px)' }} xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M 949 85 L 1003 85 L 985 115 L 985 270 L 1003 285 L 1096 285 L 1078 315 L 949 315 Z"
                 fill="#e5e2e1" stroke="#e5e2e1" strokeWidth="5" strokeLinejoin="round"
