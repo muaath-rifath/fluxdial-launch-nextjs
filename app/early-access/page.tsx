@@ -30,7 +30,7 @@ export default function EarlyAccessPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-24 sm:px-[var(--spacing-gutter)] md:px-10">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-12 lg:py-24 sm:px-[var(--spacing-gutter)] md:px-10">
         <div className="w-full max-w-2xl">
           <div className="mb-12 text-center">
             <h1 className="mb-4 font-geist text-4xl font-bold tracking-tight text-on-surface sm:text-5xl">
