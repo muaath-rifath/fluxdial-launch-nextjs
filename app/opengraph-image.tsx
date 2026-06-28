@@ -43,100 +43,138 @@ export default async function Image() {
             border: '1.5px solid #2a2a2a',
           }}
         >
-          {/* Logo row: SVG mark + HTML text */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            {/* E logo mark — paths only, no <text> */}
+          {/*
+           * Logo: replicates public/erlanglabs-logo-topbar.svg exactly.
+           * SVG viewBox "20 70 1700 340":
+           *   - E logo mark (orange polygon + nodes)
+           *   - "rlang" text at x=300
+           *   - Geometric L path (translate -109) starting at x=1058
+           *   - "abs" text at x=1220 (after translate -109 → effective x=1111)
+           *
+           * Satori does not support SVG <text> nodes, so text is rendered
+           * as HTML <span> elements positioned inline, matching the layout.
+           *
+           * The logo row is: [E-mark] [rlang] [L-path] [abs]
+           * We scale the whole thing to fit ~960px wide at OG image size.
+           *)
+          */}
+
+          {/* Logo row */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              // The SVG viewBox width is 1700, height 340.
+              // We scale to height=112px → scale factor = 112/340 ≈ 0.329
+              // viewBox x-start=20, so E-mark starts at SVG x=80..300 → ~26..92px
+              height: '112px',
+              gap: '0px',
+            }}
+          >
+            {/* E logo mark: viewBox subset covering the mark (x: 40–370, y: 70–340) */}
             <svg
               viewBox="40 70 340 270"
-              width="110"
-              height="110"
+              height="112"
+              width="141"
               xmlns="http://www.w3.org/2000/svg"
+              style={{ flexShrink: 0 }}
             >
-              {/* Main E shape */}
+              {/* Main E polygon */}
               <path
                 d="M 140 85 L 300 85 L 282 115 L 192 115 L 140 185 L 254 185 L 236 215 L 140 215 L 192 285 L 268 285 L 250 315 L 140 315 L 80 200 Z"
                 fill="#eb4700"
                 stroke="#eb4700"
-                strokeWidth="4"
+                strokeWidth="5"
                 strokeLinejoin="round"
               />
-              {/* Top-right node */}
-              <line x1="285" y1="91" x2="330" y2="91" stroke="#eb4700" strokeWidth="9" />
-              <circle cx="341" cy="91" r="10" fill="#0a0a0a" stroke="#eb4700" strokeWidth="8" />
-              {/* Bottom-left node */}
+              {/* Top-right node & line */}
+              <line x1="285" y1="91" x2="340" y2="91" stroke="#eb4700" strokeWidth="9" />
+              <circle cx="352" cy="91" r="11" fill="#0a0a0a" stroke="#eb4700" strokeWidth="8" />
+              {/* Bottom-left node & line */}
               <line x1="60" y1="309" x2="140" y2="309" stroke="#eb4700" strokeWidth="9" />
-              <circle cx="49" cy="309" r="10" fill="#0a0a0a" stroke="#eb4700" strokeWidth="8" />
+              <circle cx="48" cy="309" r="11" fill="#0a0a0a" stroke="#eb4700" strokeWidth="8" />
             </svg>
 
-            {/* "Erlang" text */}
-            <div
+            {/* "rlang" — matches SVG text x=300, font-size=240, font-weight=800
+                Scale: 112/340 ≈ 0.329 → fontSize = 240 * 0.329 ≈ 79px
+                The original textLength=629 at scale → 629 * 0.329 ≈ 207px */}
+            <span
               style={{
-                display: 'flex',
-                alignItems: 'baseline',
                 fontFamily: 'sans-serif',
+                fontSize: '79px',
+                fontWeight: 800,
+                color: '#e5e2e1',
+                lineHeight: 1,
+                letterSpacing: '-2px',
+                display: 'flex',
+                alignItems: 'center',
+                // Slight left nudge to close gap after E mark (mirrors SVG spacing)
+                marginLeft: '-6px',
               }}
             >
-              {/* Custom geometric L mark */}
-              <svg
-                viewBox="1050 80 165 240"
-                width="52"
-                height="88"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ marginRight: '-2px' }}
-              >
-                <path
-                  d="M 1058 85 L 1112 85 L 1094 115 L 1094 270 L 1112 285 L 1205 285 L 1187 315 L 1058 315 Z"
-                  fill="#e5e2e1"
-                  stroke="#e5e2e1"
-                  strokeWidth="4"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              rlang
+            </span>
 
-              <span
-                style={{
-                  fontSize: 96,
-                  fontWeight: 800,
-                  color: '#e5e2e1',
-                  letterSpacing: '-3px',
-                  lineHeight: 1,
-                  fontFamily: 'sans-serif',
-                }}
-              >
-                erlang
-              </span>
+            {/* Geometric L path: from SVG translate(-109,0), path starts at x=1058
+                Effective SVG region: x: 949–1096, y: 85–315  (with translate -109)
+                Width in SVG coords: ~147, Height: 230
+                At scale 0.329: width≈48px, height≈76px
+                We add a small gap to match SVG spacing between "rlang" and L */}
+            <svg
+              viewBox="949 70 155 270"
+              height="112"
+              width="60"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ flexShrink: 0, marginLeft: '1px' }}
+            >
+              {/* L path with translate(-109,0) applied: original coords shifted */}
+              <path
+                d="M 949 85 L 1003 85 L 985 115 L 985 270 L 1003 285 L 1096 285 L 1078 315 L 949 315 Z"
+                fill="#e5e2e1"
+                stroke="#e5e2e1"
+                strokeWidth="5"
+                strokeLinejoin="round"
+              />
+            </svg>
 
-              <span
-                style={{
-                  fontSize: 96,
-                  fontWeight: 800,
-                  color: '#e5e2e1',
-                  letterSpacing: '-3px',
-                  lineHeight: 1,
-                  fontFamily: 'sans-serif',
-                }}
-              >
-                abs
-              </span>
-            </div>
+            {/* "abs" — matches SVG text x=1220 (after translate -109 → 1111)
+                Same font size as "rlang": 79px
+                Original textLength=390 → at scale ≈ 128px */}
+            <span
+              style={{
+                fontFamily: 'sans-serif',
+                fontSize: '79px',
+                fontWeight: 800,
+                color: '#e5e2e1',
+                lineHeight: 1,
+                letterSpacing: '-2px',
+                display: 'flex',
+                alignItems: 'center',
+                marginLeft: '-2px',
+              }}
+            >
+              abs
+            </span>
           </div>
 
           {/* Tagline */}
           <div
             style={{
               marginTop: '44px',
-              fontSize: 38,
+              fontSize: '38px',
               fontWeight: 500,
               color: '#808080',
               textAlign: 'center',
               letterSpacing: '-0.01em',
               fontFamily: 'sans-serif',
+              display: 'flex',
             }}
           >
             The Voice Infrastructure for Enterprise AI.
           </div>
 
-          {/* Subtle accent line */}
+          {/* Accent line */}
           <div
             style={{
               marginTop: '32px',
@@ -144,6 +182,7 @@ export default async function Image() {
               height: '3px',
               backgroundColor: '#eb4700',
               borderRadius: '2px',
+              display: 'flex',
             }}
           />
         </div>
