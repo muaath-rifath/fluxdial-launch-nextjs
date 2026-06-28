@@ -53,17 +53,21 @@ export default async function Image() {
           {/*
            * Logo row: [E-mark] [rlang] [L-path] [abs]
            *
-           * alignItems:'baseline':
-           *   - SVG elements → bottom edge = shared baseline
-           *   - Text spans   → font baseline = shared baseline
+           * Satori does NOT correctly implement alignItems:'baseline' for SVG
+           * replaced elements (it uses top/center instead of bottom edge).
+           * Fix: use alignItems:'flex-end' and extend both SVG viewBoxes BELOW
+           * y=315 (the visual baseline) by the font descender depth.
            *
-           * This matches the source SVG where all elements sit on y=315 baseline.
-           * Font = Montserrat 800, same as source SVG → proportions are identical.
+           * Montserrat 800 descender ≈ 20% of font-size = 240*0.2 = 48 SVG units.
+           * Extended viewBox bottoms: y = 315 + 48 = 363.
+           * With flex-end: SVG box bottom = text span box bottom.
+           * Text baseline = span bottom − descender (48 SVG units scaled).
+           * SVG visual baseline (y=315) = SVG bottom − 48 units scaled = text baseline ✓
            */}
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 0 }}>
 
-            {/* E mark: viewBox padded so nodes/strokes aren't clipped */}
-            <svg viewBox="25 68 350 252" width={fs(350)} height={fs(252)} xmlns="http://www.w3.org/2000/svg">
+            {/* E mark: y=68 → 363 (315+48). Fully includes bottom-left node circle. */}
+            <svg viewBox="25 68 350 295" width={fs(350)} height={fs(295)} xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M 140 85 L 300 85 L 282 115 L 192 115 L 140 185 L 254 185 L 236 215 L 140 215 L 192 285 L 268 285 L 250 315 L 140 315 L 80 200 Z"
                 fill="#eb4700" stroke="#eb4700" strokeWidth="5" strokeLinejoin="round"
@@ -74,7 +78,7 @@ export default async function Image() {
               <circle cx="48" cy="309" r="11" fill="#0a0a0a" stroke="#eb4700" strokeWidth="8" />
             </svg>
 
-            {/* "rlang" — confirmed value from og-preview: marginLeft=-60px */}
+            {/* "rlang" — marginLeft=-60px confirmed via og-preview */}
             <span style={{
               fontFamily: 'Montserrat',
               fontSize: `${fs(240)}px`,
@@ -86,15 +90,15 @@ export default async function Image() {
               rlang
             </span>
 
-            {/* L path: after translate(-109,0) → x=949–1096, y=85–315 */}
-            <svg viewBox="949 85 147 230" width={fs(147)} height={fs(230)} xmlns="http://www.w3.org/2000/svg">
+            {/* L path: y=85 → 363 (315+48) */}
+            <svg viewBox="949 85 147 278" width={fs(147)} height={fs(278)} xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M 949 85 L 1003 85 L 985 115 L 985 270 L 1003 285 L 1096 285 L 1078 315 L 949 315 Z"
                 fill="#e5e2e1" stroke="#e5e2e1" strokeWidth="5" strokeLinejoin="round"
               />
             </svg>
 
-            {/* "abs" — confirmed value from og-preview: marginLeft=1px */}
+            {/* "abs" — marginLeft=1px confirmed via og-preview */}
             <span style={{
               fontFamily: 'Montserrat',
               fontSize: `${fs(240)}px`,
