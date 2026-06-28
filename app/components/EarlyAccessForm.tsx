@@ -12,7 +12,8 @@ export default function EarlyAccessForm() {
     message: '',
     _honey: '',       // honeypot – never shown to real users
   });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'duplicate'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
   const turnstileRef = useRef<TurnstileInstance>(null);
@@ -42,13 +43,23 @@ export default function EarlyAccessForm() {
         setStatus('success');
         setFormData({ firstName: '', lastName: '', email: '', companySize: '', message: '', _honey: '' });
         setTurnstileToken(null);
+      } else if (res.status === 409) {
+        // Duplicate email — already on waitlist
+        setStatus('duplicate');
       } else {
+        let msg = 'An error occurred while sending your request. Please try again.';
+        try {
+          const data = await res.json();
+          if (data?.message) msg = data.message;
+        } catch { /* ignore */ }
+        setErrorMessage(msg);
         setStatus('error');
         // Reset widget so user can try again
         turnstileRef.current?.reset();
         setTurnstileToken(null);
       }
-    } catch (error) {
+    } catch {
+      setErrorMessage('A network error occurred. Please check your connection and try again.');
       setStatus('error');
       turnstileRef.current?.reset();
       setTurnstileToken(null);
@@ -57,8 +68,35 @@ export default function EarlyAccessForm() {
 
   if (status === 'success') {
     return (
-      <div className="p-8 sm:p-10 rounded-lg bg-primary-container/20 border border-primary-container/50 text-primary-container text-center text-lg font-inter">
-        You're on the waitlist! We'll be in touch soon.
+      <div className="p-8 sm:p-10 rounded-lg bg-primary-container/20 border border-primary-container/50 text-center">
+        <div className="mb-3 flex justify-center">
+          <span className="text-4xl" aria-hidden="true">🎉</span>
+        </div>
+        <h2 className="mb-2 font-geist text-xl font-semibold text-on-surface">You're on the waitlist!</h2>
+        <p className="font-inter text-base text-secondary">We'll be in touch soon. Stay tuned!</p>
+      </div>
+    );
+  }
+
+  if (status === 'duplicate') {
+    return (
+      <div className="p-8 sm:p-10 rounded-lg bg-surface-container border border-surface-border text-center">
+        <div className="mb-3 flex justify-center">
+          <span className="text-4xl" aria-hidden="true">✉️</span>
+        </div>
+        <h2 className="mb-2 font-geist text-xl font-semibold text-on-surface">You're already on the list!</h2>
+        <p className="mb-6 font-inter text-base text-secondary">
+          We already have your email on the ErlangLabs waitlist. We'll reach out when access is ready — stay tuned!
+        </p>
+        <a
+          href="/"
+          className="btn-secondary inline-flex items-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Back to Home
+        </a>
       </div>
     );
   }
@@ -169,7 +207,9 @@ export default function EarlyAccessForm() {
       </div>
 
       {status === 'error' && (
-        <p className="text-sm text-error">An error occurred while sending your request. Please try again.</p>
+        <p className="text-sm text-error" role="alert">
+          {errorMessage || 'An error occurred while sending your request. Please try again.'}
+        </p>
       )}
 
       <div className="w-full max-w-full overflow-hidden flex justify-center">

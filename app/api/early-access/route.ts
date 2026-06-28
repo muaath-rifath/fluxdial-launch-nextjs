@@ -15,23 +15,29 @@ const earlyAccessSchema = z.object({
   _honey:         z.string().optional().default(''),
 });
 
-// ─── Rate Limiter (Upstash) ────────────────────────────────────────────────────
+// ─── Redis client (shared for rate limiting + deduplication) ─────────────────
 // Gracefully disabled when env vars are not set (local dev / preview).
-let ratelimit: Ratelimit | null = null;
-const redisUrl = process.env.UPSTASH_REDIS_REST_KV_REST_API_URL;
+const redisUrl   = process.env.UPSTASH_REDIS_REST_KV_REST_API_URL;
 const redisToken = process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN;
 
+let redis: Redis | null = null;
+let ratelimit: Ratelimit | null = null;
+
 if (redisUrl && redisToken) {
+  redis = new Redis({ url: redisUrl, token: redisToken });
+
   ratelimit = new Ratelimit({
-    redis: new Redis({
-      url: redisUrl,
-      token: redisToken,
-    }),
+    redis,
     // 5 submissions per IP per 10-minute sliding window (tighter than contact)
     limiter: Ratelimit.slidingWindow(5, '10 m'),
     analytics: true,
     prefix: 'erlanglabs:early-access',
   });
+}
+
+// ─── Deduplication helpers ────────────────────────────────────────────────────
+function waitlistKey(email: string): string {
+  return `erlanglabs:waitlist:${email.toLowerCase().trim()}`;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -150,6 +156,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'CAPTCHA verification failed' }, { status: 400 });
     }
 
+    // ── 5.5. Duplicate email check ───────────────────────────────────────────────
+    // Stores email -> ISO timestamp in Redis with no TTL (permanent waitlist record).
+    // Gracefully skipped when Redis is not configured.
+    if (redis) {
+      const key = waitlistKey(email);
+      const existing = await redis.get<string>(key);
+      if (existing) {
+        return NextResponse.json(
+          { error: 'already_registered', message: 'This email is already on the waitlist.' },
+          { status: 409 }
+        );
+      }
+      // Reserve the slot before hitting Zoho/Resend (deleted on CRM failure)
+      await redis.set(key, new Date().toISOString());
+    }
+
     // ── 6. Get Zoho access token ────────────────────────────────────────────────
     const accessToken = await getZohoAccessToken();
 
@@ -180,6 +202,10 @@ export async function POST(request: Request) {
 
     if (!crmResponse.ok || crmResult.data?.[0]?.status === 'error') {
       console.error('Zoho API Error Detail:', crmResult);
+      // Release the deduplication key so the user can retry after a CRM failure
+      if (redis) {
+        await redis.del(waitlistKey(email));
+      }
       return NextResponse.json({ error: 'Failed to push data to CRM' }, { status: 502 });
     }
 
